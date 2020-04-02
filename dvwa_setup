@@ -1,0 +1,64 @@
+# Setup DVWA on Kali Linux.
+
+# Download DVWA from GitHub
+	git clone https://github.com/ethicalhack3r/DVWA.git
+
+# Move DVWA to /var/www/html/
+	sudo mv DVWA /var/www/html/dvwa
+
+# List to check if it is copied.
+	ls -la /var/www/html/dvwa/
+
+# Give Maximum permission to dvwa Directory.
+	chmod -R 777 /var/www/html/dvwa/
+
+# Setup the Config file.
+	1. First Let’s make a copy.
+	cd dvwa/config/
+	cp config.inc.php.dist config.inc.php
+	
+  2. Make below changes.
+	$_DVWA[ 'db_user' ]     = 'kali';
+	$_DVWA[ 'db_password' ] = 'kali';
+	
+  Then 
+	$_DVWA[ 'recaptcha_public_key' ]  = '6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg';
+	$_DVWA[ 'recaptcha_private_key' ] = '6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ';
+
+# Configure the Database.
+	1. First Start the Service.
+	sudo service mysql start
+	
+  2. Login to MySQL
+	sudo mysql -u root
+	
+  3. Setup DataBase
+	create database dvwa;
+	create user 'kali'@'localhost' identified by 'kali';
+	
+  4. Grant Priv to kali User.
+	grant all privileges on dvwa.* to 'kali'@'localhost' identified by 'kali';
+
+# Configure the Server.
+	1. First Start the Service.
+	sudo service apache2 start
+	
+  2. Make Required changes in config file.
+	sudo nano /etc/php/7.3/apache2/php.ini
+	
+  3. Make below Changes.
+	allow_url_fopen = On
+	allow_url_include = On
+	
+  4. Restart the apache Service.
+	sudo service apache2 restart
+
+# Open Firefox and Browse to DVWA
+  Url: localhost/dvwa (If you have installed in Local Machine)
+  Username: admin
+  Password: password
+  
+  Once Logged in scrolled down and Click on Create/Reset Database button.
+  you should see a succues message below that button and will be redirected to logon page.
+  
+  Login again with the above username and password.
